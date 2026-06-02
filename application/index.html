@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AutoLog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── INDEX-ONLY styles ── */
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding: 90px 16px 40px;
+    }
+
+    /* nav fixo no canto superior direito apenas com botão Login */
+    .index-nav {
+      position: fixed;
+      top: 0; right: 0; left: 0;
+      display: flex;
+      justify-content: flex-end;
+      padding: 20px 40px;
+      z-index: 50;
+    }
+
+    /* Fundo com gradiente radial sutil */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 50%,
+          rgba(232, 53, 74, 0.08) 0%,
+          transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Grade de linhas decorativas */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    }
+
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 48px;
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 20px;
+      width: min(980px, 100%);
+      animation: heroIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    @keyframes heroIn {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .logo-eyebrow::before,
+    .logo-eyebrow::after {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: var(--muted);
+      opacity: 0.4;
+    }
+
+    .hero-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(6rem, 18vw, 14rem);
+      letter-spacing: 8px;
+      line-height: 0.9;
+      background: linear-gradient(135deg, #fff 0%, var(--accent) 55%, var(--accent2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 60px rgba(232, 53, 74, 0.25));
+      user-select: none;
+    }
+
+    .hero-tagline {
+      font-size: 0.92rem;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+      margin-top: -24px;
+    }
+
+    .hero-divider {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, transparent, var(--border), transparent);
+    }
+
+    .btn-enter {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      text-decoration: none;
+      padding: 16px 40px;
+      border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      box-shadow:
+        0 4px 24px rgba(232, 53, 74, 0.4),
+        0 1px 0 rgba(255,255,255,0.1) inset;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+      border: none;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .btn-enter::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+      transition: left 0.4s ease;
+    }
+
+    .btn-enter:hover::before { left: 160%; }
+
+    .btn-enter:hover {
+      transform: translateY(-3px);
+      box-shadow:
+        0 10px 36px rgba(232, 53, 74, 0.5),
+        0 1px 0 rgba(255,255,255,0.1) inset;
+    }
+
+    .btn-enter:active { transform: translateY(-1px); }
+    .btn-enter svg { transition: transform 0.2s; }
+    .btn-enter:hover svg { transform: translateX(4px); }
+
+    .about-section {
+      margin-top: -12px;
+      width: min(860px, 100%);
+      background: rgba(20, 20, 23, 0.88);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 26px 24px;
+      text-align: left;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(8px);
+    }
+
+    .about-section h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 2px;
+      font-size: 2rem;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+
+    .about-section p {
+      color: #d8d7d1;
+      line-height: 1.65;
+      font-size: 0.96rem;
+      margin-bottom: 14px;
+    }
+
+    .about-section p:last-child { margin-bottom: 0; }
+
+    .about-note {
+      margin-top: 8px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(232, 53, 74, 0.32);
+      background: rgba(232, 53, 74, 0.08);
+      color: #f6f2ea;
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        gap: 30px;
+        padding: 10px 6px;
+      }
+
+      .hero-tagline { margin-top: -12px; }
+
+      .about-section {
+        padding: 20px 16px;
+        border-radius: 16px;
+      }
+
+      .about-section h2 { font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV minimal só com botão Login (chama o modal via script.js) -->
+<div class="index-nav">
+  <button class="btn-login">Login</button>
+</div>
+
+<div class="hero">
+  <div class="logo-eyebrow">Bem-vindo ao</div>
+
+  <div class="hero-logo">AutoLog</div>
+
+  <p class="hero-tagline">Registre, acompanhe e compartilhe seus automóveis.</p>
+
+  <div class="hero-divider"></div>
+
+  <!-- agora um botão (não link) — o script decide: logado → perfil, deslogado → modal -->
+  <button type="button" id="btn-enter" class="btn-enter">
+    Ver lista de carros
+    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+      <path d="M5 12h14M13 6l6 6-6 6"/>
+    </svg>
+  </button>
+
+  <section class="about-section" aria-labelledby="sobre-autolog">
+    <h2 id="sobre-autolog">Sobre o Projeto</h2>
+    <p>
+      O AutoLog e um projeto academico criado para organizar informacoes sobre automoveis em um unico lugar,
+      facilitando o registro, acompanhamento e compartilhamento de carros dentro da plataforma.
+    </p>
+    <p>
+      A ideia principal e oferecer uma experiencia simples e intuitiva para que cada usuario consiga cadastrar
+      seus veiculos, visualizar detalhes e manter seus dados sempre atualizados durante o uso do sistema.
+    </p>
+    <p class="about-note">
+      Sobre seus dados: fique tranquilo. As informacoes solicitadas durante a utilizacao do site sao essenciais
+      para o funcionamento correto do AutoLog e sao tratadas com cuidado, com foco em seguranca e privacidade.
+      Esses dados nao sao usados para finalidades indevidas.
+    </p>
+  </section>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

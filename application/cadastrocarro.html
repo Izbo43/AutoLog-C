@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AutoLog — Cadastro de Carro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo" style="text-decoration:none">AutoLog</a>
+  <div class="nav-search">
+    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="8"/>
+      <path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input type="text" placeholder="Buscar @usuário…">
+  </div>
+  <button class="btn-login">Login</button>
+</nav>
+
+<!-- PAGE -->
+<div class="page">
+  <h1 class="page-title">Cadastro de Carro</h1>
+  <p class="page-sub">Preencha os dados do seu veículo. Os campos marcados com <span style="color:var(--accent)">*</span> são obrigatórios.</p>
+
+  <!-- SEÇÃO 1: IDENTIDADE -->
+  <div class="form-section">
+    <div class="form-section-title">Identidade do Veículo</div>
+
+    <div class="media-row">
+      <div class="upload-box upload-cover" id="cover-box">
+        <input type="file" id="cover-input" accept="image/*" onchange="handleCoverPick(this)">
+        <div class="upload-icon">📸</div>
+        <div class="upload-label">Foto de Exibição</div>
+      </div>
+      <div class="upload-box upload-gallery" id="gallery-box">
+        <input type="file" id="gallery-input" accept="image/*" multiple onchange="handleGalleryPick(this)">
+        <div class="gallery-placeholder" id="gallery-placeholder">
+          <div class="upload-icon">🖼️</div>
+          <div class="upload-label">Adicione até 5 fotos</div>
+        </div>
+        <div class="gallery-previews" id="gallery-previews" style="display:none"></div>
+      </div>
+    </div>
+
+    <div class="field-row single">
+      <div class="field">
+        <label>Modelo do Carro <span class="req">*</span></label>
+        <input type="text" id="nome" placeholder="Ex: Chevrolet Corvette C6 Z06">
+        <span class="field-error">Informe o modelo do carro.</span>
+      </div>
+    </div>
+
+    <div class="field-row single">
+      <div class="field">
+        <label>Descrição <span class="req">*</span></label>
+        <textarea id="descricao" placeholder="Conte um pouco sobre o seu carro para os outros…"></textarea>
+        <span class="field-error">Adicione uma descrição.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 2: DOCUMENTAÇÃO (privado) -->
+  <div class="form-section">
+    <div class="form-section-title">Documentação</div>
+    <p class="field-hint" style="margin-bottom:16px">🔒 Dados privados — visíveis apenas para você</p>
+
+    <div class="field-row triple">
+      <div class="field">
+        <label>Placa <span class="req">*</span></label>
+        <input type="text" id="placa" placeholder="ABC-1D23" maxlength="8" oninput="formatPlaca(this)">
+        <span class="field-error">Placa inválida.</span>
+      </div>
+      <div class="field">
+        <label>RENAVAM <span class="req">*</span></label>
+        <input type="text" id="renavam" placeholder="00000000000" maxlength="11">
+        <span class="field-error">RENAVAM inválido.</span>
+      </div>
+      <div class="field">
+        <label>Chassi <span class="req">*</span></label>
+        <input type="text" id="chassi" placeholder="9BWZZZ377VT004251" maxlength="17" style="text-transform:uppercase">
+        <span class="field-error">Chassi inválido (mín. 11 chars).</span>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Fabricante <span class="req">*</span></label>
+        <input type="text" id="fabricante" placeholder="Ex: Chevrolet">
+        <span class="field-error">Informe o fabricante.</span>
+      </div>
+      <div class="field">
+        <label>Ano <span class="req">*</span></label>
+        <input type="number" id="ano" placeholder="Ex: 2008" min="1900" max="2030">
+        <span class="field-error">Ano inválido.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 3: DADOS PÚBLICOS -->
+  <div class="form-section">
+    <div class="form-section-title">Dados de Exibição</div>
+    <div class="public-badge">
+      <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
+      Visível publicamente
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Cidade <span class="req">*</span></label>
+        <input type="text" id="cidade" placeholder="Ex: Campinas">
+        <span class="field-error">Informe a cidade.</span>
+      </div>
+      <div class="field">
+        <label>Estado <span class="req">*</span></label>
+        <input type="text" id="estado" placeholder="Ex: SP" maxlength="2" style="text-transform:uppercase">
+        <span class="field-error">Informe o estado.</span>
+      </div>
+    </div>
+
+    <div class="field-row triple">
+      <div class="field">
+        <label>Combustível <span class="req">*</span></label>
+        <select id="combustivel">
+          <option value="" disabled selected>Selecione</option>
+          <option>Gasolina</option>
+          <option>Etanol</option>
+          <option>Flex</option>
+          <option>Diesel</option>
+          <option>Elétrico</option>
+          <option>Híbrido</option>
+          <option>GNV</option>
+        </select>
+        <span class="field-error">Selecione o combustível.</span>
+      </div>
+      <div class="field">
+        <label>Quilometragem <span class="req">*</span></label>
+        <input type="text" id="km" placeholder="Ex: 67.000" oninput="formatKm(this)">
+        <span class="field-error">Informe a quilometragem.</span>
+      </div>
+      <div class="field">
+        <label>Câmbio</label>
+        <select id="cambio">
+          <option value="" disabled selected>Selecione</option>
+          <option>Manual</option>
+          <option>Automático</option>
+          <option>CVT</option>
+          <option>Automatizado</option>
+          <option>Dupla embreagem</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Cor <span class="req">*</span></label>
+        <input type="text" id="cor" placeholder="Ex: Preto">
+        <span class="field-error">Informe a cor.</span>
+      </div>
+      <div class="field">
+        <label>Motor <span class="req">*</span></label>
+        <input type="text" id="motor" placeholder="Ex: 7.0 LS7 V8">
+        <span class="field-error">Informe o motor.</span>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="field-row single">
+      <div class="field">
+        <label>Estado da Documentação <span class="req">*</span></label>
+        <textarea id="documentacao" rows="3" placeholder="Ex: Tudo pago, sem multas ou restrições. IPVA 2026 quitado."></textarea>
+        <span class="field-error">Descreva o estado da documentação.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- AÇÕES -->
+  <div class="submit-row">
+    <a href="javascript:history.back()" class="btn-cancel">Cancelar</a>
+    <button class="btn-submit" id="btn-submit" onclick="submitForm()">
+      <span>Concluir Cadastro</span>
+      <div class="spinner"></div>
+    </button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

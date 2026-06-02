@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AutoLog — Registre-se</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo" style="text-decoration:none">AutoLog</a>
+  <div class="nav-search">
+    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="8"/>
+      <path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input type="text" placeholder="Buscar @usuário…">
+  </div>
+  <button class="btn-login">Login</button>
+</nav>
+
+<!-- PAGE -->
+<div class="page">
+  <h1 class="page-title">Registre-se</h1>
+  <p class="page-sub">
+    Preencha os dados abaixo para criar sua conta no AutoLog.
+    Campos marcados com <span style="color:var(--accent)">*</span> são obrigatórios.
+  </p>
+
+  <!-- SEÇÃO 1: IDENTIDADE -->
+  <div class="form-section">
+    <div class="form-section-title">Sua Identidade</div>
+
+    <div class="reg-identity-row">
+      <!-- Foto de perfil -->
+      <div class="upload-box upload-avatar" id="avatar-box">
+        <input type="file" id="avatar-input" accept="image/*" onchange="handleAvatarPick(this)">
+        <div class="upload-icon">👤</div>
+        <div class="upload-label">Adicione uma<br>foto de perfil</div>
+      </div>
+
+      <!-- Username + Display + Sobre -->
+      <div class="reg-identity-fields">
+        <div class="field-row">
+          <div class="field">
+            <label>Nome de Usuário <span class="req">*</span></label>
+            <div class="handle-input">
+              <span>@</span>
+              <input type="text" id="username" placeholder="seuhandle" autocomplete="username">
+            </div>
+            <span class="field-error">3-30 caracteres, letras, números, _ ou .</span>
+          </div>
+          <div class="field">
+            <label>Nome de Exibição <span class="req">*</span></label>
+            <input type="text" id="nome_display" placeholder="Como será exibido">
+            <span class="field-error">Informe um nome de exibição.</span>
+          </div>
+        </div>
+
+        <div class="field-row single">
+          <div class="field">
+            <label>Sobre mim</label>
+            <textarea id="sobre" rows="3" placeholder="Conte um pouco sobre o seu perfil para os outros"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Banner -->
+    <div class="field-row single">
+      <div class="field">
+        <label>Banner do Perfil</label>
+        <div class="upload-box upload-banner" id="banner-box">
+          <input type="file" id="banner-input" accept="image/*" onchange="handleBannerPick(this)">
+          <div class="upload-icon">🖼️</div>
+          <div class="upload-label">Adicione um banner ao seu perfil</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 2: ACESSO -->
+  <div class="form-section">
+    <div class="form-section-title">Dados de Acesso</div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Email <span class="req">*</span></label>
+        <input type="email" id="email" placeholder="seuemail@exemplo.com" autocomplete="email">
+        <span class="field-error">Email inválido.</span>
+      </div>
+      <div class="field">
+        <label>Nome Completo <span class="req">*</span></label>
+        <input type="text" id="nome_completo" placeholder="Seu nome completo" autocomplete="name">
+        <span class="field-error">Informe seu nome completo.</span>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Senha <span class="req">*</span></label>
+        <input type="password" id="senha" placeholder="••••••••" autocomplete="new-password">
+        <span class="field-error">Senha fraca.</span>
+      </div>
+      <div class="field">
+        <label>Confirme a Senha <span class="req">*</span></label>
+        <input type="password" id="senha_confirma" placeholder="Repita a senha" autocomplete="new-password">
+        <span class="field-error">As senhas não coincidem.</span>
+      </div>
+    </div>
+
+    <p class="field-hint">
+      Mínimo 8 caracteres, com pelo menos uma letra maiúscula, um número e um símbolo (@ # $ ! % & * ?).
+    </p>
+  </div>
+
+  <!-- SEÇÃO 3: DADOS PESSOAIS -->
+  <div class="form-section">
+    <div class="form-section-title">Dados Pessoais</div>
+    <p class="field-hint" style="margin-bottom:16px">🔒 Dados privados — não são exibidos no seu perfil público</p>
+
+    <div class="field-row">
+      <div class="field">
+        <label>CPF/CNPJ <span class="req">*</span></label>
+        <input type="text" id="cpf_cnpj" placeholder="000.000.000-00" oninput="formatCpfCnpj(this)" maxlength="18">
+        <span class="field-error">CPF/CNPJ inválido.</span>
+      </div>
+      <div class="field">
+        <label>Data de Nascimento <span class="req">*</span></label>
+        <input type="text" id="data_nasc" placeholder="DD/MM/AAAA" oninput="formatDate(this)" maxlength="10">
+        <span class="field-error">Data inválida.</span>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Telefone <span class="req">*</span></label>
+        <input type="text" id="telefone" placeholder="(00) 00000-0000" oninput="formatPhone(this)" maxlength="15">
+        <span class="field-error">Telefone inválido.</span>
+      </div>
+      <div class="field">
+        <label>Telefone Secundário</label>
+        <input type="text" id="telefone2" placeholder="(00) 00000-0000 (opcional)" oninput="formatPhone(this)" maxlength="15">
+      </div>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 4: ENDEREÇO -->
+  <div class="form-section">
+    <div class="form-section-title">Endereço</div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>CEP <span class="req">*</span></label>
+        <input type="text" id="cep" placeholder="00000-000" oninput="formatCep(this)" onblur="lookupCep(this)" maxlength="9">
+        <span class="field-error">CEP inválido.</span>
+      </div>
+      <div class="field">
+        <label>Rua <span class="req">*</span></label>
+        <input type="text" id="rua" placeholder="Rua das Palmeiras">
+        <span class="field-error">Informe a rua.</span>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Bairro <span class="req">*</span></label>
+        <input type="text" id="bairro" placeholder="Centro">
+        <span class="field-error">Informe o bairro.</span>
+      </div>
+      <div class="field">
+        <label>Número <span class="req">*</span></label>
+        <input type="text" id="numero" placeholder="123">
+        <span class="field-error">Informe o número.</span>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Cidade <span class="req">*</span></label>
+        <input type="text" id="cidade" placeholder="Campinas">
+        <span class="field-error">Informe a cidade.</span>
+      </div>
+      <div class="field">
+        <label>Estado (UF) <span class="req">*</span></label>
+        <input type="text" id="estado" placeholder="SP" maxlength="2" style="text-transform:uppercase">
+        <span class="field-error">UF inválida.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- AÇÕES -->
+  <div class="submit-row">
+    <a href="index.html" class="btn-cancel">Cancelar</a>
+    <button class="btn-submit" id="btn-submit" onclick="submitRegister()">
+      <span>Concluir Cadastro</span>
+      <div class="spinner"></div>
+    </button>
+  </div>
+
+  <p class="auth-switch" style="margin-top:20px">
+    Já tem uma conta?
+    <a href="#" onclick="event.preventDefault(); openAuthModal('login')">Faça login</a>
+  </p>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+build:
+  language: php
+  port: 80
+
+database:
+  type: mysql
+  version: "8.0"
+  port: 3306
+  user: app
+  password: app
+  dbname: app
